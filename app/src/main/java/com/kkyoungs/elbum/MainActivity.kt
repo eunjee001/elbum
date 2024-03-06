@@ -1,18 +1,22 @@
 package com.kkyoungs.elbum
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.kkyoungs.elbum.databinding.ActivityMainBinding
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 class MainActivity : AppCompatActivity() {
 
     private val imageLoadLauncher = registerForActivityResult(ActivityResultContracts.GetMultipleContents()){
@@ -29,9 +33,19 @@ class MainActivity : AppCompatActivity() {
         binding.loadImageButton.setOnClickListener {
             checkPermission()
         }
+
+        binding.navigationFrameActivityButton.setOnClickListener {
+            navigateToFrameActivity()
+        }
         initRecyclerView()
     }
 
+    private fun navigateToFrameActivity(){
+        val images = imageAdapter.currentList.filterIsInstance<ImageItems.Image>().map { it.uri.toString() }.toTypedArray()
+        val intent = Intent(this, FrameActivity::class.java)
+            .putExtra("images", images)
+        startActivity(intent)
+    }
     private fun initRecyclerView(){
         imageAdapter = ImageAdapter(object : ImageAdapter.ItemClickListener{
             override fun onLoadMoreClick() {

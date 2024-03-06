@@ -11,6 +11,8 @@ import com.kkyoungs.elbum.databinding.ItemImageBinding
 import com.kkyoungs.elbum.databinding.ItemLoadMoreBinding
 
 class ImageAdapter(private val itemClickListener : ItemClickListener)  : ListAdapter< ImageItems ,RecyclerView.ViewHolder>(
+    // diffUtil :  oldItem, newItem의 두 데이터셋을 비교하여 값이 변경된 부분만을 RecyclerView에게 알려줄 수 있다.
+    // 목록이 크면, 작업에 상당한 시간이 걸릴 수 있으므로 백그라운드 스레드에서 실행 하면 좋다.
     object :DiffUtil.ItemCallback<ImageItems>(){
         override fun areItemsTheSame(oldItem: ImageItems, newItem: ImageItems): Boolean {
             // 똑같은 item을 참조하는지

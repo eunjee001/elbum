@@ -1,5 +1,6 @@
 package com.kkyoungs.elbum
 
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.kkyoungs.elbum.databinding.ActivityFrameBinding
@@ -12,5 +13,10 @@ class FrameActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
+        val images = (intent.getStringArrayExtra("images") ?: emptyArray()).
+            map { FrameItem(Uri.parse(it)) }.toList()
+        val frameAdapter = FrameAdapter(images)
+
+        binding.viewPager.adapter = frameAdapter
     }
 }
